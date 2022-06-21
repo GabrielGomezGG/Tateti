@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1040882938954",
+    "project_id": "tateti-unlam2022",
+    "storage_bucket": "tateti-unlam2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040882938954:android:a2bdb17743fd098eb422b3",
+        "android_client_info": {
+          "package_name": "ar.com.develup.tateti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1040882938954-8n8ec2voicq52sv2aiq0h1ro7f5c477m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmXORluJxt6cO3kcoJno5KTlyXPPPsi2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1040882938954-8n8ec2voicq52sv2aiq0h1ro7f5c477m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
