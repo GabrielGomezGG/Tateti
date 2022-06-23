@@ -1,6 +1,7 @@
 package ar.com.develup.tateti.actividades
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
@@ -12,7 +13,6 @@ import ar.com.develup.tateti.modelo.Partida
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.actividad_partida.*
 import kotlinx.android.synthetic.main.item_partida.*
 import java.util.*
@@ -209,9 +209,16 @@ class ActividadPartida : AppCompatActivity() {
         partida?.movimientos?.add(Movimiento(posicion, jugador))
         val database = obtenerReferenciaALaBaseDeDatos()
         val referenciaPartidas = database.child(Constantes.TABLA_PARTIDAS) // TODO-06-DATABASE cambiar el valor null por el child de la database llamado "Constantes.TABLA_PARTIDAS"
-        val referenciaPartida = referenciaPartidas.child(idPartida.toString()) // TODO-06-DATABASE cambiar el valor null por el child de referenciaPartidas con el id de la partida como parametro
-        // TODO-06-DATABASE Descomentar la siguiente linea una vez obtenidos los dos datos anteriores
-        referenciaPartida.child("movimientos").setValue(partida?.movimientos)
+
+        try{
+            // TODO-06-DATABASE Descomentar la siguiente linea una vez obtenidos los dos datos anteriores
+            val referenciaPartida = referenciaPartidas.child(idPartida.toString()) // TODO-06-DATABASE cambiar el valor null por el child de referenciaPartidas con el id de la partida como parametro
+            referenciaPartida.child("movimientos").setValue(partida?.movimientos)
+        }catch (e: Exception){
+            Log.e("Error", "error al actualizar la partida")
+        }
+
+
     }
 
     private fun crearPartida(posicion: Int) {
@@ -250,8 +257,6 @@ class ActividadPartida : AppCompatActivity() {
     private fun obtenerReferenciaALaBaseDeDatos(): DatabaseReference {
         // TODO-06-DATABASE
         // Retornar una referencia a la instancia de la base de datos.
-        val database = FirebaseDatabase.getInstance().reference
-
-        return database
+        return  FirebaseDatabase.getInstance().reference
     }
 }

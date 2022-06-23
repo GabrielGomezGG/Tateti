@@ -30,6 +30,7 @@ class ActividadInicial : AppCompatActivity() {
                 iniciarSesion()
             } catch (Exception: Exception){
                 Snackbar.make(it, "Error en email o contraseña", Snackbar.LENGTH_LONG).show()
+                olvideMiContrasena.visibility = View.VISIBLE
                 FirebaseCrashlytics.getInstance().log("Error al iniciar sesión con campos erroneos")
             }
         }
@@ -73,13 +74,11 @@ class ActividadInicial : AppCompatActivity() {
         // Configurar los valores por default para remote config,
         // ya sea por codigo o por XML aasdasd
         val configStting =  remoteConfigSettings{
-            minimumFetchIntervalInSeconds = 3600
+            minimumFetchIntervalInSeconds = 30
         }
         val fireBaseConfig = Firebase.remoteConfig
         fireBaseConfig.setConfigSettingsAsync(configStting)
         fireBaseConfig.setDefaultsAsync(mapOf("boton_olvide_mi_contrasena_habilitado" to false))
-
-
 
     }
 
@@ -87,13 +86,26 @@ class ActividadInicial : AppCompatActivity() {
         // TODO-04-REMOTECONFIG
         // Obtener el valor de la configuracion para saber si mostrar
         // o no el boton de olvide mi contraseña
-
+        Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener(this) { task ->
+            if (task.isSuccessful) {
+                val botonOlvideHabilitado = Firebase.remoteConfig.getBoolean("boton_olvide_mi_contrasena_habilitado")
+                if (botonOlvideHabilitado) {
+                    olvideMiContrasena.visibility = View.VISIBLE
+                } else {
+                    olvideMiContrasena.visibility = View.GONE
+                }
+            } else {
+                olvideMiContrasena.visibility = View.GONE
+            }
+        }
+        /*
         val botonOlvideHabilitado = Firebase.remoteConfig.getBoolean("boton_olvide_mi_contrasena_habilitado")
         if (botonOlvideHabilitado) {
             olvideMiContrasena.visibility = View.VISIBLE
         } else {
-            olvideMiContrasena.visibility = View.GONE
+            olvideMiContrasena.visibility = View.INVISIBLE
         }
+         */
     }
 
     private fun olvideMiContrasena() {

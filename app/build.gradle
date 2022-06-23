@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
     // crashlytics
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
-
+    //config
     implementation 'com.google.firebase:firebase-config-ktx'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
