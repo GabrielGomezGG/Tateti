@@ -35,6 +35,10 @@ class ActividadPartidas : AppCompatActivity() {
         partidas.adapter = adaptadorPartidas
         nuevaPartida.setOnClickListener { nuevaPartida() }
         cerrarSesion.setOnClickListener { cerrarSesion() }
+
+        // Obtener el usuario actual
+        val usuario = FirebaseAuth.getInstance().currentUser?.email
+        bienvenido.text = "Bienvenido $usuario"
     }
 
     override fun onResume() {
@@ -46,13 +50,16 @@ class ActividadPartidas : AppCompatActivity() {
     }
 
     fun nuevaPartida() {
+
+        //Eventos de Firebase Analytics
+        val bundle = Bundle()
+        bundle.putString("email_creador", FirebaseAuth.getInstance().currentUser?.email)
+        FirebaseAnalytics.getInstance(this).logEvent("Nueva_Partida", bundle)
+
         val intent = Intent(this, ActividadPartida::class.java)
         startActivity(intent)
 
-        //Eventos de Analytics
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Nueva Partida")
-        FirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+
     }
 
     private val listenerTablaPartidas: ChildEventListener = object : ChildEventListener {
@@ -64,6 +71,7 @@ class ActividadPartidas : AppCompatActivity() {
             val partida = dataSnapshot.getValue(Partida::class.java)
             // Asignar el valor del campo "key" del dataSnapshot
             partida!!.id = dataSnapshot.key!!
+            //partida.email = FirebaseAuth.getInstance().currentUser?.email
             adaptadorPartidas.agregarPartida(partida)
         }
 
@@ -95,14 +103,16 @@ class ActividadPartidas : AppCompatActivity() {
     }
 
     private fun cerrarSesion() {
+
+        //Eventos en FireBase
+        val bundle = Bundle()
+        bundle.putString("se_deslogueo", FirebaseAuth.getInstance().currentUser?.email)
+        FirebaseAnalytics.getInstance(this).logEvent("desloguearse", bundle)
+
         FirebaseAuth.getInstance().signOut()
         val intent = Intent(this, ActividadInicial::class.java)
         startActivity(intent)
 
-        //Eventos en FireBase
-        val bundle = Bundle()
-        val se_deslogueo = "se_deslogueo"
-        bundle.putString("se_deslogueo", se_deslogueo)
-        FirebaseAnalytics.getInstance(this).logEvent("desloguearse", bundle)
+
     }
 }
